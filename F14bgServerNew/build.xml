@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/2002/xmlspec/dtd/2.10/xmlspec.dtd">
+<project default="jar">
+	<property name="appName" value="F14bg" />
+	<property name="src.dir" value="src" />
+	<property name="lib.dir" value="lib" />
+	<property name="bin.dir" value="bin" />
+	<property name="target.dir" value="G:/f14bg" />
+	<property name="target.lib.dir" value="${target.dir}/lib" />
+	<property name="target.game.dir" value="${target.dir}/game" />
+	<property name="target.conf.dir" value="${target.dir}/conf" />
+	<property name="target.confgame.dir" value="${target.conf.dir}/game" />
+	<property name="target.confver.dir" value="${target.conf.dir}/version" />
+
+	<property name="PuertoRico" value="PuertoRico" />
+	<property name="RFTG" value="RFTG" />
+	<property name="TTA" value="TTA" />
+	<property name="Tichu" value="Tichu" />
+
+	<path id="compile.classpath">
+		<pathelement location="${src.dir}" />
+		<fileset dir="${lib.dir}" includes="**/*.jar">
+		</fileset>
+	</path>
+
+	<target name="copy">
+		<copy todir="${target.dir}">
+			<fileset dir="${bin.dir}">
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="mkdir">
+		<delete dir="${target.dir}">
+		</delete>
+		<mkdir dir="${target.dir}">
+		</mkdir>
+		<mkdir dir="${target.lib.dir}">
+		</mkdir>
+		<mkdir dir="${target.game.dir}">
+		</mkdir>
+		<mkdir dir="${target.conf.dir}">
+		</mkdir>
+		<mkdir dir="${target.confgame.dir}">
+		</mkdir>
+		<mkdir dir="${target.confver.dir}">
+		</mkdir>
+	</target>
+
+	<target name="compile" depends="mkdir">
+		<javac srcdir="${src.dir}" destdir="${target.dir}/${bin.dir}">
+			<classpath refid="compile.classpath">
+			</classpath>
+		</javac>
+	</target>
+
+	<target name="jar" depends="mkdir">
+		<echo message="打包jar文件..." />
+		<jar jarfile="${target.dir}/F14bgServer.jar">
+			<fileset dir="${bin.dir}">
+				<include name="com/f14/bg/**/*.class" />
+				<include name="com/f14/F14bg/**/*.class" />
+				<include name="com/f14/f14bgdb/**/*.class" />
+				<include name="com/f14/framework/**/*.class" />
+				<include name="com/f14/net/**/*.class" />
+				<include name="com/f14/utils/**/*.class" />
+			</fileset>
+		</jar>
+
+		<jar jarfile="${target.game.dir}/${PuertoRico}.jar">
+			<fileset dir="${bin.dir}">
+				<include name="com/f14/PuertoRico/**/*.class" />
+			</fileset>
+		</jar>
+
+		<jar jarfile="${target.game.dir}/${RFTG}.jar">
+			<fileset dir="${bin.dir}">
+				<include name="com/f14/RFTG/**/*.class" />
+			</fileset>
+		</jar>
+
+		<jar jarfile="${target.game.dir}/${TTA}.jar">
+			<fileset dir="${bin.dir}">
+				<include name="com/f14/TTA/**/*.class" />
+			</fileset>
+		</jar>
+
+		<jar jarfile="${target.game.dir}/${Tichu}.jar">
+			<fileset dir="${bin.dir}">
+				<include name="com/f14/tichu/**/*.class" />
+			</fileset>
+		</jar>
+
+		<jar jarfile="${target.game.dir}/TS.jar">
+			<fileset dir="${bin.dir}">
+				<include name="com/f14/TS/**/*.class" />
+			</fileset>
+		</jar>
+
+		<jar jarfile="${target.game.dir}/Innovation.jar">
+			<fileset dir="${bin.dir}">
+				<include name="com/f14/innovation/**/*.class" />
+			</fileset>
+		</jar>
+
+		<echo message="复制类库..." />
+		<copy todir="${target.lib.dir}">
+			<fileset dir="${lib.dir}">
+				<include name="**/*.jar" />
+			</fileset>
+		</copy>
+
+		<echo message="复制配置文件..." />
+		<copy todir="${target.conf.dir}">
+			<fileset dir="${bin.dir}">
+				<include name="*.*" />
+				<exclude name="*.class" />
+				<exclude name="log4j.properties" />
+				<exclude name="jdbc.properties" />
+			</fileset>
+		</copy>
+
+		<copy todir="${target.conf.dir}">
+			<fileset dir="${bin.dir}">
+				<include name="game/*.*" />
+				<exclude name="game/*.class" />
+			</fileset>
+		</copy>
+
+		<copy todir="${target.conf.dir}">
+			<fileset dir="${bin.dir}">
+				<include name="version/*.*" />
+				<exclude name="version/*.class" />
+			</fileset>
+		</copy>
+
+		<echo message="复制启动文件..." />
+		<copy todir="${target.dir}">
+			<fileset dir=".">
+				<include name="*.bat" />
+				<exclude name="build.bat" />
+			</fileset>
+		</copy>
+	</target>
+</project>

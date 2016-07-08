@@ -1,0 +1,11 @@
+#Thu Aug 06 10:46:46 CST 2009
+eclipse.preferences.version=1
+encoding//conf/versions.properties=UTF-8
+encoding//src/com/f14/PuertoRico/game/PRGameMode.java=UTF-8
+encoding//src/com/f14/PuertoRico/game/PuertoRico.java=UTF-8
+encoding//src/com/f14/RFTG/RFTG.java=UTF-8
+encoding//src/com/f14/RFTG/mode/RaceGameMode.java=UTF-8
+encoding//src/com/f14/bg/BoardGame.java=UTF-8
+encoding//src/com/f14/bg/GameMode.java=UTF-8
+encoding//src/com/f14/bg/exception/BoardGameException.java=UTF-8
+encoding/<project>=UTF-8

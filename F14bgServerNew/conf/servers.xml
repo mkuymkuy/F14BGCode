@@ -1,0 +1,6 @@
+<servers>
+<server host="localhost" port="8181" name="本地服务器"/>
+<server host="f14eagle.vicp.net" port="8181" name="F14私人服务器"/>
+<server host="218.78.210.229" port="80" name="Green服务器"/>
+<server host="219.141.190.104" port="8181" name="RaXeL服务器"/>
+</servers>

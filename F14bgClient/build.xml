@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project default="jar">
+	<property name="appName" value="F14bg" />
+	<property name="src.dir" value="src" />
+	<property name="lib.dir" value="lib" />
+	<property name="bin.dir" value="bin" />
+	<property name="target.dir" value="E:/f14bg_client" />
+	<property name="target.lib.dir" value="${target.dir}/lib" />
+	<property name="target.conf.dir" value="${target.dir}" />
+	
+	<path id="compile.classpath">
+		<pathelement location="${src.dir}" />
+		<fileset dir="${lib.dir}" includes="**/*.jar">
+		</fileset>
+	</path>
+	
+	<target name="copy">
+		<copy todir="${target.dir}">
+			<fileset dir="${bin.dir}">
+			</fileset>
+		</copy>
+	</target>
+	
+	<target name="mkdir">
+		<delete dir="${target.dir}">
+		</delete>
+		<mkdir dir="${target.dir}">
+		</mkdir>
+		<mkdir dir="${target.lib.dir}">
+		</mkdir>
+		<mkdir dir="${target.conf.dir}">
+		</mkdir>
+		<mkdir dir="${target.dir}/module">
+		</mkdir>
+	</target>
+	
+	<target name="compile" depends="mkdir">
+		<javac srcdir="${src.dir}" destdir="${target.dir}/${bin.dir}">
+			<classpath refid="compile.classpath">
+			</classpath>
+		</javac>
+	</target>
+	
+	<target name="jar" depends="mkdir">
+		<echo message="打包jar文件..." />
+		<jar jarfile="${target.lib.dir}/F14bgClient.jar">
+			<fileset dir="${bin.dir}">
+				<include name="com/f14/**/*.class" />
+				<exclude name="com/f14/F14bgClient/update/**/*.class" />
+			</fileset>
+		</jar>
+		
+		<jar jarfile="${target.lib.dir}/F14bgUpdate.jar">
+			<fileset dir="${bin.dir}">
+				<include name="com/f14/F14bgClient/update/**/*.class" />
+			</fileset>
+		</jar>
+		
+		<echo message="复制类库..." />
+		<copy todir="${target.lib.dir}">
+			<fileset dir="${lib.dir}">
+				<include name="**/*.jar" />
+			</fileset>
+		</copy>
+		
+		<echo message="复制配置文件..." />
+		<copy todir="${target.conf.dir}">
+			<fileset dir="${bin.dir}/re-conf">
+				<include name="*.*" />
+			</fileset>
+		</copy>
+		
+		<copy todir="${target.dir}">
+			<fileset dir="${bin.dir}">
+				<include name="version/mainapp.ver" />
+			</fileset>
+		</copy>
+		
+		<echo message="复制启动文件..." />
+		<copy todir="${target.dir}">
+			<fileset dir=".">
+				<include name="run.bat" />
+				<include name="F14bg.exe" />
+			</fileset>
+		</copy>
+	</target>
+</project>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+            http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.0.xsd
+            http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+            http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd">
+
+	
+	<bean name="pkGenDao" class="com.f14.f14bgdb.dao.impl.PkGenDaoImpl" autowire="byName" />
+	
+	<bean name="userDao" class="com.f14.f14bgdb.dao.impl.UserDaoImpl" autowire="byName" />
+	<bean name="userManager" class="com.f14.f14bgdb.service.impl.UserManagerImpl" autowire="byName" />
+	
+	<bean name="boardGameDao" class="com.f14.f14bgdb.dao.impl.BoardGameDaoImpl" autowire="byName" />
+	
+	<bean name="bgInstanceDao" class="com.f14.f14bgdb.dao.impl.BgInstanceDaoImpl" autowire="byName" />
+	<bean name="bgInstanceManager" class="com.f14.f14bgdb.service.impl.BgInstanceManagerImpl" autowire="byName" />
+	
+	<bean name="rankingListDao" class="com.f14.f14bgdb.dao.impl.RankingListDaoImpl" autowire="byName" />
+	<bean name="rankingManager" class="com.f14.f14bgdb.service.impl.RankingManagerImpl" autowire="byName" />
+	
+	<bean name="codeDetailDao" class="com.f14.f14bgdb.dao.impl.CodeDetailDaoImpl" autowire="byName" />
+	<bean name="codeDetailManager" class="com.f14.f14bgdb.service.impl.CodeDetailManagerImpl" autowire="byName" />
+</beans>

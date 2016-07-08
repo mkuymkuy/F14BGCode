@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+            http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.0.xsd
+            http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+            http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd">
+
+	<aop:aspectj-autoproxy proxy-target-class="true"/>
+
+	<aop:config proxy-target-class="false" >
+		<aop:advisor id="managerTx" advice-ref="txAdvice"
+			pointcut="execution(* *..service..*.*(..))" order="0" />
+	</aop:config>
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="find*" propagation="REQUIRED" read-only="true" rollback-for="Exception" />			
+			<tx:method name="get*" propagation="REQUIRED" read-only="true" rollback-for="Exception" />
+			<tx:method name="query*" propagation="REQUIRED" read-only="true" rollback-for="Exception" />
+			<tx:method name="save*" propagation="REQUIRED" rollback-for="Exception" />		
+			<tx:method name="update*" propagation="REQUIRED" rollback-for="Exception" />
+			<tx:method name="delete*" propagation="REQUIRED" rollback-for="Exception" />			
+			<tx:method name="remove*" propagation="REQUIRED" rollback-for="Exception" />
+			<tx:method name="*" propagation="REQUIRED" rollback-for="Exception" />
+		</tx:attributes>
+	</tx:advice>
+
+	<!-- For future properties files -->
+	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:jdbc.properties</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- JNDI DataSource for J2EE environments -->
+	<!--<jee:jndi-lookup id="dataSource" jndi-name="java:comp/env/jdbc/appfuse"/>-->
+	<bean id="c3p0DataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close"> 
+	    <property name="driverClass">
+	        <value>${database.driver}</value>
+	    </property>
+	    <property name="jdbcUrl">
+	        <value>${database.url}</value>
+	    </property>
+	    <property name="user">
+	        <value>${database.userName}</value>
+	    </property>
+	    <property name="password">
+	        <value>${database.password}</value>
+	    </property>
+	    <property name="maxPoolSize">
+	        <value>${database.maxPoolSize}</value>
+	    </property>
+	    <property name="minPoolSize">
+	        <value>${database.minPoolSize}</value>
+	    </property>
+	    <property name="maxStatements">
+	        <value>${database.maxStatements}</value>
+	    </property>
+	    <property name="checkoutTimeout">
+	        <value>${database.checkoutTimeout}</value>
+	    </property>
+	    <property name="idleConnectionTestPeriod">
+	        <value>${database.idleConnectionTestPeriod}</value>
+	    </property>	    
+	     <property name="autoCommitOnClose">
+	        <value>true</value>
+	    </property>	    	    	    	    
+	</bean>
+ 
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+		<property name="dataSource" ref="c3p0DataSource" />       
+       <property name="configLocation"
+			value="classpath:hibernate.cfg.xml" />
+             
+       <property name="hibernateProperties">
+           <props>
+               <prop key="hibernate.dialect">${hibernate.dialect}</prop>
+               <prop key="hibernate.query.substitutions">true=1 false=0</prop>
+               <prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
+               <prop key="hibernate.use_sql_comments">true</prop>
+               <prop key="hibernate.jdbc.fetch_size">${jdbc.fetch_size}</prop>
+               <prop key="hibernate.jdbc.batch_size">${jdbc.batch_size}</prop>
+               <prop key="hibernate.max_fetch_depth">${hibernate.max_fetch_depth}</prop>
+               <prop key="hibernate.jdbc.use_streams_for_binary">true</prop>
+           </props>
+       </property>	
+   </bean>
+		
+	<!-- Transaction manager for a single Hibernate SessionFactory (alternative to JTA) -->
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<import resource="applicationContext-bean.xml" />
+	
+</beans>
